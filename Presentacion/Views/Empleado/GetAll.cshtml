@@ -1,0 +1,54 @@
+﻿@model Negocio.Empleado
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="pb-md-2 pt-md-3">
+    <h2 class="text-center">Listado de Empleados</h2>
+</div>
+
+    @using (Html.BeginForm("GetAll", "Empleado", FormMethod.Get, new { enctype = "multipart/form-data" }))
+    {
+        <div class="d-flex p-md-3">
+            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control col-md-3 me-md-3", @placeholder = "Nombre de Empleado" })
+            <button type="submit" class="btn btn-outline-success rounded-pill col-md-3">Buscar</button>
+        </div>
+    }
+
+
+@if (Model != null)
+{
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Puesto</th>
+                    <th scope="col">Departamento</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Negocio.Empleado empleado in Model.Empleados)
+                {
+                    <tr>
+                        <td>@empleado.EmpleadoID</td>
+                        <td>@empleado.Nombre</td>
+                        <td>@empleado.Puesto.Descripcion</td>
+                        <td>@empleado.Departamento.Descripcion</td>
+                        <td>
+                            <a class="btn btn-outline-danger rounded-pill" href="@Url.Action("Delete", "Empleado", new { EmpleadoID = empleado.EmpleadoID })">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        Ocurrio un error al consultar la información
+    </div>
+}
